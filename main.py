@@ -72,7 +72,7 @@ def main():
     # Step 0: Generate dataset
     # --------------------------------------
 
-    print("[1/8] Generating dataset...")
+    print("[0/7] Generating dataset...")
 
     df = generate_dataset(
         design_space=design_space,
