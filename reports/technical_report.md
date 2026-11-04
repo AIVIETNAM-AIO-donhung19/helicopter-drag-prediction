@@ -1,7 +1,3 @@
-from pathlib import Path
-
-markdown = r"""# Helicopter Drag Prediction – Technical Report
-
 ## 1. Overview
 
 This project develops a **Multi-Layer Perceptron (MLP)-based surrogate model** to predict helicopter drag from a set of input parameters.
@@ -79,14 +75,8 @@ The final model is evaluated on the held-out test set using regression metrics.
 | RMSE | [1514] |
 | R² | [0.945] |
 
-### 4.1 Visual Evaluation
 
-![Training and validation loss and accurancy](figures/plot.jpeg)
-
-
-### 4.2 Summary
-
-### 4.2 Summary
+## 5 Summary
 
 The MLP model achieves an R² score of **0.945** and an RMSE of **1,514** on the test set, compared with an R² score of **0.900** and an RMSE of **2,037** on the training set. The comparable performance across the two datasets suggests that the model generalizes well to unseen data, with no clear evidence of overfitting.
 
