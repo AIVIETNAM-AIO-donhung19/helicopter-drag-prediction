@@ -19,6 +19,7 @@ from src.model import MLP
 from src.train import train_model
 from src.test import test_model
 from src.visualization import plot_training_history
+from src.data_pipeline import prepare_data
 
 
 # ==========================================
@@ -72,7 +73,7 @@ def main():
     # Step 0: Generate dataset
     # --------------------------------------
 
-    print("[0/7] Generating dataset...")
+    print("[0/3] Generating dataset...")
 
     df = generate_dataset(
         design_space=design_space,
@@ -83,72 +84,19 @@ def main():
     df.to_csv(DATA_PATH, index=False)
 
     # --------------------------------------
-    # Step 1: Load dataset
+    # Step 1: Processing dataset
     # --------------------------------------
 
-    print("\n[1/7] Loading dataset...")
+    print("\n[1/3] Processing dataset...")
 
-    df = pd.read_csv(DATA_PATH)
-
-    # --------------------------------------
-    # Step 2: Split features and target
-    # --------------------------------------
-
-    print("\n[2/7] Splitting features and target...")
-
-    X, y = split_features_target(
-        df,
-        target_column=TARGET_COLUMN
-    )
+    train_loader, val_loader, test_loader, input_dims = prepare_data()
 
     # --------------------------------------
-    # Step 3: Split train, validation, test
+    # Step 2: Initialize and train model
     # --------------------------------------
 
-    print("\n[3/7] Splitting dataset...")
+    print("\n[2/3] Initializing model and training...")
 
-    X_train, X_val, X_test, y_train, y_val, y_test = split_data(
-        X, y,
-        test_size=0.3,
-        random_state=RANDOM_STATE
-    )
-
-    # --------------------------------------
-    # Step 4: Normalize features
-    # --------------------------------------
-
-    print("\n[4/7] Normalizing data...")
-
-    X_train, X_val, X_test = normalize_data(
-        X_train, X_val, X_test)
-
-    X_train_tensor, X_val_tensor, X_test_tensor, y_train_tensor, y_val_tensor, y_test_tensor = convert_to_torch_tensors(X_train, X_val, X_test, y_train, y_val, y_test)
-
-    # --------------------------------------
-    # Step 5: Create DataLoaders
-    # --------------------------------------
-
-    print("\n[5/7] Creating DataLoaders...")
-
-    dataset_train, dataset_val, dataset_test = create_dataset(
-        X_train_tensor, y_train_tensor,
-        X_val_tensor, y_val_tensor,
-        X_test_tensor, y_test_tensor
-    )
-
-    train_loader, val_loader, test_loader = create_data_loaders(
-        dataset_train,
-        dataset_val,
-        dataset_test,
-        batch_size=BATCH_SIZE)
-
-    # --------------------------------------
-    # Step 6: Initialize and train model
-    # --------------------------------------
-
-    print("\n[6/7] Initializing model and training...")
-
-    input_dims = X_train.shape[1]
 
     model = MLP(input_dims=input_dims).to(device)
 
@@ -182,10 +130,10 @@ def main():
     plot_training_history(history)
 
     # --------------------------------------
-    # Step 7: Test best model
+    # Step 3: Test best model
     # --------------------------------------
 
-    print("\n[7/7] Evaluating best model on test set...")
+    print("\n[3/3] Evaluating best model on test set...")
 
     test_metrics = test_model(
         model=model,

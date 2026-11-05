@@ -72,12 +72,33 @@ The final model is evaluated on the held-out test set using regression metrics.
 
 | Metric | Test result |
 |---|---:|
-| MAE | [798] |
-| MSE | [2292258.5] |
-| RMSE | [1514] |
-| R² | [0.945] |
+| MAE | [720.93] |
+| MSE | [1339636.9] |
+| RMSE | [1157.4] |
+| R² | [0.967] |
 
-The model achieves an R² score of 0.945 and an RMSE of 1,514 on the test set. Its performance is comparable to that on the training set (R² = 0.900, RMSE = 2,037), suggesting good generalization with no clear evidence of overfitting.
+The model achieves an R² score of 0.967 and an RMSE of 1157.4 on the test set. Its performance is comparable to that on the training set (R² = 0.900, RMSE = 2,037), suggesting good generalization with no clear evidence of overfitting.
+
+## 5. Running Experiments
+
+Run the complete pipeline, including dataset generation, preprocessing, model training, and test evaluation:
+
+```bash
+python main.py
+```
+
+To evaluate a previously trained model without retraining:
+
+```bash
+python -m src.test
+```
+
+**Experiment outputs:**
+- `results/checkpoints/`: Saved model checkpoints.
+- `results/metrics/`: Training history and test metrics.
+- `results/figures/`: Training and evaluation plots.
+- `results/logs/`: Experiment logs.
+
 
 ---
 
